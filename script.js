@@ -46,70 +46,6 @@ const STOCK_DATA = {
     stockCharts: {} // Store chart instances
 };
 
-// --- Auth Guard ---
-const isDashboard = document.getElementById('mainContent');
-const isLoginPage = document.querySelector('.login-page');
-const loginForm = document.getElementById('loginForm');
-const authToken = localStorage.getItem('authToken');
-
-if (isDashboard && !authToken) {
-    window.location.href = 'index.html';
-}
-
-if (isLoginPage && authToken) {
-    window.location.href = 'dashboard.html';
-}
-
-// --- Login Logic ---
-if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const user = document.getElementById('username').value;
-        const pass = document.getElementById('password').value;
-
-        if (user && pass) {
-            const btn = loginForm.querySelector('.btn-login');
-            btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> ' + t('loggingIn');
-            btn.disabled = true;
-
-            setTimeout(() => {
-                localStorage.setItem('authToken', 'true');
-                localStorage.setItem('user', user);
-                window.location.href = 'dashboard.html';
-            }, 1000);
-        }
-    });
-
-    // Translate Login Page immediately (since script runs at end of body)
-    translateLoginPage();
-
-    if (isLoginPage) throw new Error("Login Page Loaded - Stopping Dashboard Scripts");
-}
-
-function translateLoginPage() {
-    if (!isLoginPage) return;
-
-    // Update static text if elements exist
-    const h1 = document.querySelector('.login-header h1');
-    if (h1) h1.textContent = t('loginTitle');
-
-    const p = document.querySelector('.login-header p');
-    if (p) p.textContent = t('loginSubtitle');
-
-    const labelUser = document.querySelector('label[for="username"]');
-    if (labelUser) labelUser.textContent = t('loginUsername');
-
-    const labelPass = document.querySelector('label[for="password"]');
-    if (labelPass) labelPass.textContent = t('loginPassword');
-
-    const btnSpan = document.querySelector('.btn-login span');
-    if (btnSpan) btnSpan.textContent = t('btnLogin');
-
-    const forgot = document.querySelector('.login-footer a');
-    if (forgot) forgot.textContent = t('forgotPassword');
-}
-
-// --- Language & Localization ---
 const TRANSLATIONS = {
     en: {
         dashboard: 'Dashboard',
@@ -294,6 +230,69 @@ const state = {
 function t(key) {
     return TRANSLATIONS[state.currentLanguage]?.[key] || TRANSLATIONS.en[key] || key;
 }
+// --- Auth Guard ---
+const isDashboard = document.getElementById('mainContent');
+const isLoginPage = document.querySelector('.login-page');
+const loginForm = document.getElementById('loginForm');
+const authToken = localStorage.getItem('authToken');
+
+if (isDashboard && !authToken) {
+    window.location.href = 'index.html';
+}
+
+if (isLoginPage && authToken) {
+    window.location.href = 'dashboard.html';
+}
+
+// --- Login Logic ---
+if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+
+        if (user && pass) {
+            const btn = loginForm.querySelector('.btn-login');
+            btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> ' + t('loggingIn');
+            btn.disabled = true;
+
+            setTimeout(() => {
+                localStorage.setItem('authToken', 'true');
+                localStorage.setItem('user', user);
+                window.location.href = 'dashboard.html';
+            }, 1000);
+        }
+    });
+
+    // Translate Login Page immediately (since script runs at end of body)
+    translateLoginPage();
+
+    if (isLoginPage) throw new Error("Login Page Loaded - Stopping Dashboard Scripts");
+}
+
+function translateLoginPage() {
+    if (!isLoginPage) return;
+
+    // Update static text if elements exist
+    const h1 = document.querySelector('.login-header h1');
+    if (h1) h1.textContent = t('loginTitle');
+
+    const p = document.querySelector('.login-header p');
+    if (p) p.textContent = t('loginSubtitle');
+
+    const labelUser = document.querySelector('label[for="username"]');
+    if (labelUser) labelUser.textContent = t('loginUsername');
+
+    const labelPass = document.querySelector('label[for="password"]');
+    if (labelPass) labelPass.textContent = t('loginPassword');
+
+    const btnSpan = document.querySelector('.btn-login span');
+    if (btnSpan) btnSpan.textContent = t('btnLogin');
+
+    const forgot = document.querySelector('.login-footer a');
+    if (forgot) forgot.textContent = t('forgotPassword');
+}
+
 
 // --- DOM Elements ---
 const sidebar = document.getElementById('sidebar');
